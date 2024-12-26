@@ -20,7 +20,7 @@ def get_sales_data():
     commas. The loop will repeatedly request data until it is valid.
     """
     while True:
-        print("Please enter saless data from the last market.")
+        print("Please enter sales data from the last market.")
         print("Data should be six numbers, separataed by commas.")
         print("Example: 10,20,30,40,50,60\n")
 
@@ -74,7 +74,16 @@ def calculate_surplus_data(sales_row):
     print("Calculating surplus data...\n")
     stock = SHEET.worksheet("stock").get_all_values()
     stock_row = stock[-1] ## slice method
-    print(stock_row)
+    print(f"stock row: {stock_row}")
+    print(f"sales row: {sales_row}")
+
+    surplus_data = []
+    for stock, sales in zip(stock_row, sales_row):
+        surplus = int(stock) - sales
+        surplus_data.append(surplus)
+    
+    return surplus_data
+
 
 
 def main():
@@ -84,8 +93,8 @@ def main():
     data = get_sales_data()
     sales_data = [int(num) for num in data]
     update_sales_worksheet(sales_data)
-    calculate_surplus_data(sales_data)
-
+    new_surplus_data = calculate_surplus_data(sales_data)
+    print(new_surplus_data)
 
 print("Welcome to Love Sandwiches Data Automation")
 main()
